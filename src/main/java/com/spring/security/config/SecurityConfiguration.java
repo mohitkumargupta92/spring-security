@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -21,9 +22,17 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		httpSecurity.authorizeRequests()
-		.antMatchers("/rest/hello").access("hasRole('USER')")
-		.anyRequest().fullyAuthenticated().and().httpBasic();
+				// .antMatchers("/rest/hello").access("hasRole('USER')")
+				// .antMatchers("/rest/bye").access("hasRole('ADMIN')")
+				.anyRequest().permitAll().and().addFilterBefore(customFilter(), BasicAuthenticationFilter.class)
+				.httpBasic();
+		// .anyRequest().fullyAuthenticated().and().httpBasic();
 		httpSecurity.csrf().disable();
+	}
+
+	@Bean
+	public CustomFilter customFilter() {
+		return new CustomFilter();
 	}
 
 	@Bean

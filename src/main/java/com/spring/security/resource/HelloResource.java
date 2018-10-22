@@ -7,14 +7,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("rest/hello")
+@RequestMapping("rest")
 public class HelloResource {
 	
-	@GetMapping
+	@GetMapping("/hello")
 	public  String helloWorld(@AuthenticationPrincipal final UserDetails userDetails){
-		System.out.println("User Name "+userDetails.getUsername()+"password "+userDetails.getPassword());
+		System.out.println("User Name "+userDetails.getUsername()+" password "+userDetails.getPassword());
 		
 		return "Welcome!! to the World of Mohit";
+	}
+	
+	@GetMapping("/bye")
+	public  String byeWorld(@AuthenticationPrincipal final UserDetails userDetails){
+		System.out.println("User Name "+userDetails.getUsername()+" password "+userDetails.getPassword());
+		
+		return "Good Bye!";
 	}
 
 }
